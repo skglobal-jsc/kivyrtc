@@ -1,0 +1,110 @@
+#:kivy 1.10.1
+
+<BannerAds>:
+    canvas.before:
+        Color:
+            rgba: (0,0,0,1) if root.dark_theme else (1,1,1,1)
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: root.radius
+    padding: [dp(10)]
+    spacing: dp(5)
+    size_hint: None, None
+    height: dp(90)
+    width: dp(450)
+
+    AnchorLayout:
+        anchor_x: 'center'
+        anchor_y: 'top'
+        size_hint: None, 1
+        width: dp(70)
+        padding: [dp(10)]
+        AsyncImage:
+            canvas.before:
+                Color:
+                    rgba: root.bg_color
+                RoundedRectangle:
+                    pos: self.x-dp(6), self.y-dp(6)
+                    size: self.height+dp(12), self.height+dp(12)
+            source: root.icon
+            size_hint: None, None
+            height: self.parent.height*.4
+            width: self.parent.width*.4
+    BoxLayout:
+        orientation: 'vertical'
+        Label:
+            text_size: self.size
+            halign: 'left'
+            valign: 'top'
+            color: [0.0, 0.4, 0.8, 1]
+            bold: True
+            font_size: '20sp'
+            size_hint: 1, None
+            height: dp(30)
+            font_name: 'data/fonts/Roboto-Bold.ttf'
+            text: root.title
+        Label:
+            text_size: self.size
+            halign: 'left'
+            valign: 'top'
+            font_size: '16sp'
+            font_name: 'data/fonts/Roboto-Regular.ttf'
+            text: root.description
+            color: (1,1,1,1) if root.dark_theme else (0,0,0,1)
+
+<FullBannerAds>:
+    canvas.before:
+        Color:
+            rgba: root.bg_color
+        Rectangle:
+            pos: self.x, self.y
+            size: self.size
+    padding: [dp(10)]
+    spacing: dp(8)
+    size_hint: 1, None
+    height: dp(90)
+
+    AnchorLayout:
+        anchor_x: 'center'
+        anchor_y: 'center'
+        size_hint: None, 1
+        width: dp(190)
+        AsyncImage:
+            source: root.logo
+    BoxLayout:
+        orientation: 'vertical'
+        Label:
+            text_size: self.size
+            halign: 'left'
+            valign: 'bottom'
+            color: root.text_color
+            font_size: '16sp'
+            font_name: 'data/fonts/Roboto-Bold.ttf'
+            markup: True
+            text: root.title
+        Label:
+            text_size: self.size
+            halign: 'left'
+            valign: 'top'
+            font_size: '20sp'
+            font_name: 'data/fonts/Roboto-Regular.ttf'
+            color: root.text_color
+            text: root.description
+    Label:
+        canvas.before:
+            Color:
+                rgba: root.button_color
+            RoundedRectangle:
+                pos: self.x, self.y+dp(10)
+                size: self.width, self.height-dp(20)
+        text: root.button_text
+        font_size: '20sp'
+        font_name: 'data/fonts/Roboto-Bold.ttf'
+        halign: 'center'
+        valign: 'center'
+        color: root.button_text_color
+        padding_x: dp(7)
+        text_size: [None, None]
+        size_hint: None, 1
+        size: self.texture_size

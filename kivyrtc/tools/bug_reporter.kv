@@ -1,0 +1,123 @@
+#:kivy 1.10.1
+
+<BugReporter>:
+    txt_traceback: txt_traceback.text_input
+    log_app: log_app.text_input
+    canvas:
+        Color:
+            rgba: .9,.9,.9,1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    BoxLayout:
+        orientation: 'vertical'
+        padding: 10
+        Label:
+            id: title
+            text: 'App has experienced an internal error :('
+            pos_hint:{'center_x': 0.5, 'center_y': 0.5}
+            size_hint: None, None
+            text_size: root.width, None
+            size: self.texture_size
+            halign:"center"
+            valign: "middle"
+            font_size: '19sp'
+            bold: True
+            color: .2,.2,.2, 1
+        TabbedPanel:
+            id: tab_wg
+            do_default_tab: False
+            background_color: (0, 0, 0, 0) #50% translucent red
+            border: [0, 0, 0, 0]
+            background_image: ''
+            TextView:
+                id: txt_traceback
+                text: 'Traceback'
+            TextView:
+                id: log_app
+                text: 'Log app'
+        BoxLayout:
+            padding: dp(10), dp(10)
+            spacing: dp(5)
+            size_hint_y:None
+            height: dp(70)
+            AnchorLayout:
+                anchor_x:'center'
+                anchor_y: 'center'
+                BTReport:
+                    id: copy_bt
+                    text: 'Copy Traceback'
+                    on_release: root.on_clipboard()
+            AnchorLayout:
+                anchor_x:'center'
+                anchor_y: 'center'
+                BTReport:
+                    text: 'Report Bug'
+                    on_release: root.on_report()
+            AnchorLayout:
+                anchor_x:'center'
+                anchor_y: 'center'
+                BTReport:
+                    text: 'Close'
+                    on_release: root.on_close()
+
+<TextView@TabbedPanelItem>:
+    text_input: text
+    ScrollView:
+        bar_width: 10
+        scroll_y: 0
+        TextInput:
+            id: text
+            size_hint_y: None
+            height: max(root.height, self.minimum_height)
+            background_color: 1, 1, 1, 0.6
+            background_normal: ''
+            text: ''
+            foreground_color: .2,.2,.2, 1
+            cursor_color: 0,0,0,1
+            readonly: True
+
+<ReportWarning>:
+    size_hint: .5, .5
+    auto_dismiss: False
+    title: 'Warning'
+    BoxLayout:
+        orientation: 'vertical'
+        Label:
+            text_size: self.size
+            text: root.text
+            padding: '4sp', '4sp'
+            valign: 'middle'
+        FloatLayout:
+            size_hint_y: None
+            height: dp(40)
+            Button:
+                on_release: root.dispatch('on_release')
+                text: 'Report'
+                pos_hint:{'center_x': 0.25, 'center_y': 0.5}
+                padding_x: dp(10)
+                text_size: [None, None]
+                size_hint: None, .8
+                size: self.texture_size
+                halign: 'center'
+                valign: 'center'
+            Button:
+                on_release: root.dismiss()
+                text: 'Close'
+                pos_hint:{'center_x': 0.75, 'center_y': 0.5}
+                padding_x: dp(10)
+                text_size: [None, None]
+                size_hint: None, .8
+                size: self.texture_size
+                halign: 'center'
+                valign: 'center'
+
+<BTReport@Button>:
+    padding_x: dp(10)
+    text_size: [None, None]
+    size_hint: None, .8
+    size: self.texture_size
+    halign: 'center'
+    valign: 'center'
+    font_size: '19sp'
+    # color: .2,.2,.2, 1

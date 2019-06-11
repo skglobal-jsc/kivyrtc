@@ -1,0 +1,24 @@
+# Python installation tools
+setuptools
+wheel
+pip
+
+# Build tools
+# PyInstaller; sys_platform != 'linux'
+# Cython==0.29.10; sys_platform != 'win32'
+
+# Dependencies of kivy
+# pypiwin32; sys_platform == 'win32'
+kivy_deps.glew==0.1.12; sys_platform == 'win32'
+kivy_deps.sdl2==0.1.22; sys_platform == 'win32'
+pyobjus; sys_platform == 'darwin'
+
+# Project's packages
+Kivy~=1.11.0
+pytest
+opencv-python
+numpy
+av
+aiohttp
+aiortc
+sounddevice

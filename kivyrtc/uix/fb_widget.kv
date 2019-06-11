@@ -1,0 +1,79 @@
+#:kivy 1.11.0
+
+#:import joinp os.path.join
+
+<ImageButton@ButtonBehavior+Image>
+    font_size: '15sp'
+    text: 'Button'
+    allow_stretch: True
+    font_name: "Roboto"
+    Label:
+        font_size: root.font_size
+        text: root.text
+        pos: root.pos
+        size: root.size
+        font_name: root.font_name
+        text_size: self.size
+        halign: 'center'
+        valign: 'middle'
+
+<AccountWidget@BoxLayout>
+    canvas.before:
+        Color:
+            rgba: get_c_from_h('#4a4a4aff') if app.fbAcc.token else (0,0,0,0)
+        RoundedRectangle:
+            pos: self.x-dp(10), self.y
+            size: self.width+dp(20), self.height
+    padding: [dp(5)]
+    ScrollView:
+        do_scroll_y: False
+        do_scroll_x: False
+        BoxLayout:
+            size_hint_y:1
+            size_hint_x:None
+            width: self.minimum_width
+            Widget:
+                canvas:
+                    Color:
+                        rgba: 1,1,1,1
+                    RoundedRectangle:
+                        pos:self.pos
+                        size: self.size
+                        radius: [9000]
+                        source:
+                            joinp(app.user_data_dir, 'pro_file_pic.jpg')\
+                            if app.fbAcc.token else 'kivyrtc/data/blank.png'
+                size_hint: None, 1
+                allow_stretch: True
+                width: root.height-dp(10) if app.fbAcc.token else 0
+            ImageButton:
+                size_hint: None, 1
+                width: root.width*(0.46 if app.fbAcc.token else 1)
+                on_release:
+                    app.fbAcc.get_token() if not app.fbAcc.token else None
+                font_name: 'data/fonts/Roboto-Regular.ttf'
+                text:
+                    '{} {}'.format(app.fbAcc.db['data']['last_name'],
+                    app.fbAcc.db['data']['first_name'])\
+                    if app.fbAcc.token else ''
+                source:
+                    'kivyrtc/data/login-with-fb.png'\
+                    if not app.fbAcc.token else 'kivyrtc/data/blank.png'
+            Widget:
+                size_hint: None, 1
+                width: root.width*0.03
+                canvas:
+                    Color:
+                        rgb: .8,.8,.8
+                    Line:
+                        points:
+                            (self.center_x, self.y+dp(4),
+                            self.center_x, self.y+self.height-dp(4))
+                        width: dp(1)
+            ImageButton:
+                size_hint: None, 1
+                width: root.width*0.22
+                font_name: 'data/fonts/Roboto-Regular.ttf'
+                text: 'Logout'
+                on_release: app.fbAcc.logout()
+                source: 'kivyrtc/data/blank.png'

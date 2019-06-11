@@ -1,0 +1,37 @@
+#:kivy 1.11.0
+
+FloatLayout:
+    GridLayout:
+        id: network_camera
+        cols: 2
+    StreamView:
+        id: user_camera
+        source: ''
+        size_hint: None, None
+        size: '300dp', '160dp'
+        pos_hint: {'right': 1, 'center_y': .25}
+        allow_stretch: True
+    BoxLayout:
+        size_hint: None, None
+        size: '640dp', '35dp'
+        pos_hint: {'right': 1}
+        TextInput:
+            id: server
+            multiline: True
+        TextInput:
+            id: room
+            size_hint_x: None
+            width: '100dp'
+            input_filter: 'int'
+            multiline: True
+        Button:
+            size_hint_x: None
+            width: '130dp'
+            text: 'Join room'
+            on_release: app.connect_room(room.text)
+        Button:
+            size_hint_x: None
+            width: '130dp'
+            text: 'Leave room'
+            on_release:
+                app.leave_room()
