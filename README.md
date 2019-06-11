@@ -9,11 +9,12 @@ A simple video call for Kivy use [aiortc](https://github.com/aiortc/aiortc).
     - Camera use OpenCV, not use kivy camera provider.
     - Have some problems when handling audio.
 
-**TODO**
-    - Add new app icon in `kivyrtc/data` (replace existing file) and remove this todo.
-    - Generate a new GUID for Inno setup when create new project and remove this todo.
-    - When change version, remember change in files: main.py and buildtools/create-installer.iss
-    - When you release app please change `IS_RELEASE` in utils/platform.py to `True` and remember change back to `False` when done it.
+**TODO:**
+
+- Add new app icon in `kivyrtc/data` (replace existing file) and remove this todo.
+- Generate a new GUID for Inno setup when create new project and remove this todo.
+- When change version, remember change in files: main.py and buildtools/create-installer.iss
+- When you release app please change `IS_RELEASE` in utils/platform.py to `True` and remember change back to `False` when done it.
 
 ## Usage
 
