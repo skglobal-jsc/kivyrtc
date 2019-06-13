@@ -27,7 +27,7 @@ def _get_user_data_dir(name):
     # Determine and return the user_data_dir.
     data_dir = ""
     if PLATFORM == 'ios':
-        data_dir = expanduser(join('~/Documents', name))
+        data_dir = expanduser('~/Documents')
     elif PLATFORM == 'android':
         from jnius import autoclass, cast
         PythonActivity = autoclass('org.kivy.android.PythonActivity')
@@ -55,21 +55,22 @@ IS_RELEASE = False
 PLATFORM = _get_platform()
 IS_BINARY = False
 FIRST_RUN = False
-KIVY_HOME = './.kivy'
-REAL_DATA_DIR = ''
+KIVY_HOME = ''
+REAL_DATA_DIR = './.appdata'
 DATA_DIR = None
 OLD_DATA_DIR = None
 
 def pre_run_app(app_name, app_version, del_old_data):
     '''
-    KIVY_HOME = './.kivy' when run 'python main.py'
+    DATA_DIR = './.data/<app_version>' when run 'python main.py'
+    KIVY_HOME = DATA_DIR+'/.kivy'
 
-    When app is packed, KIVY_HOME is:
-    - Windows: `%APPDATA%/<app_name>/<app_version>/.kivy`
-    - Mac: `~/.<app_name>/<app_version>/.kivy`
-    - iOS: `~/Documents/<app_name>/<app_version>/.kivy` is returned
+    When app is packed, DATA_DIR is:
+    - Windows: `%APPDATA%/<app_name>/<app_version>`
+    - Mac: `~/Library/Application Support/<app_name>/<app_version>`
+    - iOS: `~/Documents/<app_name>/<app_version>` is returned
         (which is inside the app's sandbox).
-    - Android: `Context.GetFilesDir + <app_name>/<app_version>/.kivy` is returned.
+    - Android: `Context.GetFilesDir + <app_name>/<app_version>` is returned.
 
     This function fix:
 
@@ -79,9 +80,6 @@ def pre_run_app(app_name, app_version, del_old_data):
     '''
     global IS_BINARY, FIRST_RUN, KIVY_HOME, REAL_DATA_DIR,\
         DATA_DIR, OLD_DATA_DIR
-
-    REAL_DATA_DIR = _get_user_data_dir(app_name)
-    DATA_DIR = join(REAL_DATA_DIR, app_version)
 
     # Check if app bundled
     # https://pyinstaller.readthedocs.io/en/latest/runtime-information.html
@@ -135,13 +133,18 @@ def pre_run_app(app_name, app_version, del_old_data):
 
         IS_BINARY = True
 
-        # Kivy-ios active key KIVY_NO_CONFIG
-        if os.environ.get('KIVY_NO_CONFIG'):
-            del os.environ['KIVY_NO_CONFIG']
+        # Kivy-ios active key KIVY_NO_FILELOG
+        if os.environ.get('KIVY_NO_FILELOG'):
+            del os.environ['KIVY_NO_FILELOG']
 
     if IS_BINARY:
-        KIVY_HOME = join(DATA_DIR, '.kivy')
+        REAL_DATA_DIR = _get_user_data_dir(app_name)
 
+    if not exists(REAL_DATA_DIR):
+        os.mkdir(REAL_DATA_DIR)
+
+    DATA_DIR = join(REAL_DATA_DIR, app_version)
+    KIVY_HOME = join(DATA_DIR, '.kivy')
     FIRST_RUN = not exists(KIVY_HOME)
 
     if FIRST_RUN:
@@ -157,7 +160,7 @@ def pre_run_app(app_name, app_version, del_old_data):
         if old_ver != [0,0,0]:
             OLD_DATA_DIR = join(REAL_DATA_DIR, '{}.{}.{}'.format(*old_ver))
 
-        if IS_BINARY and not exists(DATA_DIR):
+        if not exists(DATA_DIR):
             # Create new data dir
             os.mkdir(DATA_DIR)
 

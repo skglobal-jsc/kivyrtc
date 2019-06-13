@@ -263,7 +263,7 @@ class KivyRTCApp(App):
 
             elif res['janus'] == 'hangup':
                 await self.pcs.pop(res['sender']).close()
-                self.recorder.remove_track(res['sender'])
+                await self.recorder.remove_track(res['sender'])
                 Logger.info(f'AppRTC: {res["sender"]} leave room')
 
             elif res['janus'] == 'slowlink':
@@ -316,7 +316,7 @@ class KivyRTCApp(App):
 
         @pc.on("track")
         async def on_track(track):
-            self.recorder.addTrack(track, plugin.plugin_id)
+            await self.recorder.addTrack(track, plugin.plugin_id)
 
         request = {
             "request" : "join",

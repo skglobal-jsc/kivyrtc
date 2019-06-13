@@ -14,9 +14,6 @@ from aiortc.mediastreams import MediaStreamError
 
 
 class VideoImageTrack(VideoStreamTrack):
-    """
-    A video stream track that returns a rotating image.
-    """
 
     def __init__(self, app):
         super().__init__()  # don't forget this!

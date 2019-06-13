@@ -1,5 +1,4 @@
 from queue import Queue
-from threading import Lock
 import asyncio
 
 from aiortc.mediastreams import MediaStreamError
@@ -17,20 +16,17 @@ class MediaRecorderContext:
         self.queue = Queue()
 
 class MediaStreamer:
-    """
-    A media sink that consumes and discards all media.
-    """
     def __init__(self, container, format=None, options={}):
         self.__container = container
         self.__tracks = {}
-        self.__lock = Lock()
+        self.__lock = asyncio.Lock()
 
-    def addTrack(self, track, sender):
+    async def addTrack(self, track, sender):
         """
         Add a track to be recorded.
 
         """
-        with self.__lock:
+        async with self.__lock:
             if track.kind == 'video':
                 stream = StreamView(
                     pos_hint={'center_x': 0.5, 'center_y': 0.5},
@@ -41,8 +37,8 @@ class MediaStreamer:
             elif track.kind == 'audio':
                 self.__tracks[track] = MediaRecorderContext(None, sender)
 
-    def remove_track(self, sender):
-        with self.__lock:
+    async def remove_track(self, sender):
+        async with self.__lock:
             items = []
             for track, context in self.__tracks.items():
                 if context.sender == sender:
