@@ -10,7 +10,7 @@ from PyInstaller.utils.hooks import collect_submodules
 # View more on https://kivy.org/doc/stable/api-kivy.tools.packaging.pyinstaller_hooks.html#kivy.tools.packaging.pyinstaller_hooks.get_deps_minimal
 kivy_core = {
     'window': True,
-    'clipboard': 'sdl2',
+    'clipboard': True,
     'image': True,
     'text': True,
     'video': 'null',
@@ -52,11 +52,12 @@ else:
 hiddenimports += [
     'kivy.weakmethod', # I don't know why pyinstaller forgot to include it
 ]
+hiddenimports += collect_submodules('av')
 
 excludes += [
     'lib2to3',
-    'docutils', # Enable this if you use RstDocument
-    'numpy', # Include because of camera android, picamera ?
+    'docutils', # Uncomment this if you use RstDocument
+    # 'numpy', # Include because of camera android, picamera ?
 ]
 
 # ffpyplayer always includes for some reason

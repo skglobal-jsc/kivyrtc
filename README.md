@@ -92,4 +92,9 @@ pyinstaller ./desktop.spec
 
 If you get error, read [this](https://kivy-skglobal.readthedocs.io/en/latest/development/packaging-project/) to fix it or contact to python@sk-global.biz for further instructions.
 
-## Known issues
+## Copyright Notice
+
+Copyright (C) 2019 Spring Knowledge Global,.JSC. All rights reserved.
+
+Licensed under the [MIT](https://choosealicense.com/licenses/mit/)
+license (see the LICENSE file).
